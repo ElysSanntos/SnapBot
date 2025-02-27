@@ -1,28 +1,44 @@
-public function index()
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Device;
+
+class DeviceController extends Controller
 {
-    return Device::all();
+    /*
+    public function index()
+    {
+        return response()->json(Device::all());
+    }
+    */
+    public function index()
+{
+    return response()->json(['status' => 'ok']);
 }
 
-public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required',
-        'model' => 'required',
-        'status' => 'required',
-    ]);
+    public function store(Request $request)
+    {
+        $device = Device::create($request->all());
+        return response()->json($device, 201);
+    }
 
-    return Device::create($request->all());
-}
+    public function show($id)
+    {
+        return response()->json(Device::findOrFail($id));
+    }
 
-public function update(Request $request, $id)
-{
-    $device = Device::findOrFail($id);
-    $device->update($request->all());
-    return $device;
-}
+    public function update(Request $request, $id)
+    {
+        $device = Device::findOrFail($id);
+        $device->update($request->all());
+        return response()->json($device);
+    }
 
-public function destroy($id)
-{
-    Device::findOrFail($id)->delete();
-    return response()->json(['message' => 'Device deleted']);
+    public function destroy($id)
+    {
+        Device::destroy($id);
+        return response()->json(['message' => 'Dispositivo excluído']);
+    }
 }
