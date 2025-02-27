@@ -11,7 +11,7 @@ describe('DeviceFormComponent', () => {
       declarations: [DeviceFormComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(DeviceFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,52 +1,30 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DeviceService } from '../device.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DeviceService } from '../device.service'; // Importe o serviço
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Device } from '../models/device.model';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-device-form',
+  standalone: false,
   templateUrl: './device-form.component.html',
-  styleUrls: ['./device-form.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrl: './device-form.component.scss'
 })
-export class DeviceFormComponent implements OnInit {
-  deviceForm!: FormGroup;
-  deviceId: number | undefined // Para saber se é edição ou cadastro
+export class DeviceFormComponent {
+  deviceForm: FormGroup;
+  deviceId?: number; // Definição correta da variável
 
   constructor(
     private fb: FormBuilder,
-    private deviceService: DeviceService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
-
-  ngOnInit() {
-      // Inicializando o formulário com controles e validadores
-    console.log('DeviceFormComponent carregado!');
+    private deviceService: DeviceService, // Injeção do serviço
+    private snackBar: MatSnackBar, // Injeção do MatSnackBar
+    private router: Router // Injeção do Router
+  ) {
     this.deviceForm = this.fb.group({
       name: ['', Validators.required],
       model: ['', Validators.required],
       status: ['', Validators.required]
-    });
-
-    // Verifica se existe um ID na URL (Edição)
-  const id = this.route.snapshot.paramMap.get('id');
-
-  if (id) {
-    const deviceId = Number(id); // Converte a string para number
-    if (!isNaN(deviceId)) {
-      this.loadDevice(deviceId); // Passa o ID convertido
-    }
-  }
-}
-  // Carrega os dados para edição
-  loadDevice(id: number) {
-    this.deviceService.getDeviceById(id).subscribe((device: Device) => {
-      this.deviceForm.patchValue(device);
     });
   }
 
@@ -56,14 +34,14 @@ export class DeviceFormComponent implements OnInit {
     const deviceData = this.deviceForm.value;
 
     if (this.deviceId) {
-      // Modo de edição
+      // Atualiza dispositivo existente
       this.deviceService.updateDevice(this.deviceId, deviceData).subscribe(() => {
         this.showMessage('Dispositivo atualizado com sucesso!');
         this.router.navigate(['/devices']);
       });
     } else {
-      // Modo de cadastro
-      this.deviceService.createDevice(deviceData).subscribe(() => {
+      // Cria um novo dispositivo
+      this.deviceService.addDevice(deviceData).subscribe(() => {
         this.showMessage('Dispositivo cadastrado com sucesso!');
         this.deviceForm.reset();
       });

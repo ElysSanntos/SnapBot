@@ -1,43 +1,49 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-
 import { DeviceService } from '../device.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-device-list',
+  standalone: false,
   templateUrl: './device-list.component.html',
-  styleUrls: ['./device-list.component.scss']
+  styleUrl: './device-list.component.scss'
 })
 export class DeviceListComponent implements OnInit {
-  devices: any[] = [];
-  displayedColumns: string[] = ['name', 'model', 'status', 'actions'];
 
-  // Não inicializamos a dataSource aqui
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
+  devices: any[] = [];  // Aqui vão os dispositivos que receberemos da API
+  dataSource = new MatTableDataSource<any>(); // Inicializa corretamente
+  displayedColumns: string[] = ['name', 'model', 'status', 'actions']; // Define as colunas
 
-  constructor(private deviceService: DeviceService) {}
+
+  constructor(private  deviceService: DeviceService, private readonly router: Router) {}
 
   ngOnInit(): void {
-    // Inicializamos dataSource dentro do ngOnInit
-    this.deviceService.getDevices().subscribe(devices => {
-      this.devices = devices;
-      this.dataSource = new MatTableDataSource(this.devices);  // Inicializa com os dados da API
-    });
+    console.log('DeviceListComponent carregado!');
+    this.loadDevices();
   }
 
-  onMarkAsUsed(deviceId: number): void {
-    this.deviceService.updateDevice(deviceId, { status: 'Em uso' }).subscribe(() => {
-      this.devices = this.devices.map(device =>
-        device.id === deviceId ? { ...device, status: 'Em uso' } : device
-      );
-      this.dataSource.data = this.devices;  // Atualiza a dataSource após a alteração
-    });
+  loadDevices() {
+    this.deviceService.getDevices().subscribe(
+      (data: any) => {
+        this.devices = data;
+        this.dataSource.data = this.devices;
+      },
+      (error: any) => {
+        console.error('Erro ao carregar dispositivos', error);
+      }
+    );
   }
 
-  onDelete(deviceId: number): void {
-    this.deviceService.deleteDevice(deviceId).subscribe(() => {
-      this.devices = this.devices.filter(device => device.id !== deviceId);
-      this.dataSource.data = this.devices;  // Atualiza a dataSource após a exclusão
-    });
+  editDevice(device: any) {
+    this.router.navigate(['/devices/edit', device.id]); // ✅ Redireciona para edição
+  }
+
+  deleteDevice(deviceId: number) {
+    if (confirm('Tem certeza que deseja excluir este dispositivo?')) {
+      this.deviceService.deleteDevice(deviceId).subscribe(() => {
+        this.loadDevices(); // Recarrega a lista após excluir
+      });
+    }
   }
 }

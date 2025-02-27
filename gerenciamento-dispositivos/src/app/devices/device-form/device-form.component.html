@@ -1,21 +1,23 @@
 <div class="device-form-container">
   <h2>Cadastrar Dispositivo</h2>
 
-  <form [formGroup]="deviceForm" (ngSubmit)="onSubmit()">
-
-    <!-- Campo Nome do Dispositivo -->
+  <form [formGroup]="deviceForm" (ngSubmit)="onSubmit()" class="device-form">
     <mat-form-field appearance="outline">
       <mat-label>Nome do Dispositivo</mat-label>
       <input matInput formControlName="name" required />
+      <mat-error *ngIf="deviceForm.get('name')?.invalid && deviceForm.get('name')?.touched">
+        Nome obrigatório
+      </mat-error>
     </mat-form-field>
 
-    <!-- Campo Modelo -->
     <mat-form-field appearance="outline">
       <mat-label>Modelo</mat-label>
       <input matInput formControlName="model" required />
+      <mat-error *ngIf="deviceForm.get('model')?.invalid && deviceForm.get('model')?.touched">
+        Modelo obrigatório
+      </mat-error>
     </mat-form-field>
 
-    <!-- Campo Status -->
     <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
       <mat-select formControlName="status">
@@ -25,11 +27,17 @@
       </mat-select>
     </mat-form-field>
 
-    <!-- Botão de Envio -->
-
-    <button mat-raised-button color="primary" type="submit" [disabled]="deviceForm.invalid">
-      Cadastrar
-    </button>
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="deviceForm.invalid">
+        Cadastrar
+      </button>
+      <button mat-stroked-button color="warn" type="button" (click)="deviceForm.reset()">
+        Limpar
+      </button>
+    </div>
   </form>
 </div>
 
+<div style="background-color: lightblue; padding: 20px;">
+  <h2 style="color: darkblue;">Formulário de Dispositivo</h2>
+</div>
