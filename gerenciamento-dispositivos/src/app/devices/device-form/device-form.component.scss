@@ -1,0 +1,37 @@
+/* Estilos para o formulário */
+.device-form-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  background: rgb(129, 201, 101); /* Cor de fundo do formulário */
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* Definir cor do texto nos campos de entrada e cor de fundo */
+mat-form-field input, mat-form-field mat-select {
+  color: #000 !important;  /* Cor do texto (preto) */
+  background-color: #fff !important;  /* Cor de fundo branca */
+  border: 1px solid #ccc !important;  /* Cor da borda */
+  padding: 8px;  /* Padding para os campos */
+}
+
+/* Estilos para o botão */
+button {
+  width: 100%;
+  background-color: #1976D2;  /* Cor do botão */
+  color: white;  /* Cor do texto do botão */
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1565C0;  /* Cor do botão ao passar o mouse */
+}
