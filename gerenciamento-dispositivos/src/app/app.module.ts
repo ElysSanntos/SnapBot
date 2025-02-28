@@ -21,13 +21,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DeviceEditComponent } from './devices/device-edit/device-edit.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     AppComponent,
     DeviceListComponent,
     DeviceFormComponent,
-    DeviceEditComponent
+    DeviceEditComponent,
+    MatIconModule
   ],
   imports: [
     BrowserModule,

@@ -1,72 +1,92 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { DeviceService } from '../device.service';
-import { Router } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-device-list',
   standalone: false,
   templateUrl: './device-list.component.html',
-  styleUrls: ['./device-list.component.scss']
+  styleUrls: ['./device-list.component.scss'],
 })
 export class DeviceListComponent implements OnInit {
+  devices: any[] = []; // Armazena a lista de dispositivos
+  filteredDevices: MatTableDataSource<any> = new MatTableDataSource(); // Fonte de dados da tabela
+  filterStatus: string = ''; // Status do filtro
+  displayedColumns: string[] = [
+    'name',
+    'location',
+    'purchase_date',
+    'model',
+    'in_use',
+    'actions',
+  ];
 
-  devices: any[] = [];
-  dataSource = new MatTableDataSource<any>();
-  displayedColumns: string[] = ['name', 'model', 'status', 'actions'];
-
-  constructor(
-    private deviceService: DeviceService,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
+  constructor(private deviceService: DeviceService, private router: Router, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
-    console.log('DeviceListComponent carregado!');
-    this.loadDevices();
+    this.loadDevices(); // Carrega a lista de dispositivos na inicialização
   }
 
-  loadDevices() {
+  // Método para carregar os dispositivos
+  loadDevices(): void {
     this.deviceService.getDevices().subscribe(
       (response: any) => {
+        console.log('Resposta da API:', response);
 
-        this.devices = response.data.map((device: any) => ({
-          ...device,
-           status: device.in_use === 1 ? 'Ativo' : 'Inativo'
-        }));
-        this.dataSource.data = this.devices; // Atualiza a tabela
+        // Verifica se a resposta é um array diretamente ou se os dispositivos estão dentro de um objeto
+        if (Array.isArray(response)) {
+          this.devices = response;
+        } else if (response.data && Array.isArray(response.data)) {
+          this.devices = response.data;
+        } else {
+          console.error('Formato inesperado da resposta:', response);
+          this.devices = []; // Garante que a lista não quebre
+        }
+
+        // Atualiza a tabela com os dispositivos
+        this.filteredDevices.data = this.devices;
       },
-      (error: any) => {
+      (error) => {
         console.error('Erro ao carregar dispositivos', error);
       }
     );
   }
 
-
-
-  editDevice(device: any) {
-    this.router.navigate(['/devices/edit', device.id]);
+  editDevice(device: any): void {
+    console.log('Editando dispositivo:', device);
+    this.router.navigate(['/devices/edit', device.id]); // Redireciona para a tela de edição
   }
 
-  deleteDevice(deviceId: number) {
-    if (confirm('Tem certeza que deseja excluir este dispositivo?')) {
-      this.deviceService.deleteDevice(deviceId).subscribe(
-        () => {
-          this.loadDevices(); // Recarrega a lista após excluir
-          this.snackBar.open('Dispositivo excluído com sucesso!', 'Fechar', {
-            duration: 3000, // Exibe a mensagem por 3 segundos
-            panelClass: ['success-snackbar']
-          });
-        },
-        (error: any) => {
-          console.error('Erro ao excluir dispositivo', error);
-          this.snackBar.open('Erro ao excluir dispositivo.', 'Fechar', {
-            duration: 3000,
-            panelClass: ['error-snackbar']
-          });
-        }
+  // Filtra os dispositivos com base no status
+  filterDevices(): void {
+    if (!this.filterStatus) {
+      this.filteredDevices.data = this.devices;
+    } else {
+      this.filteredDevices.data = this.devices.filter(
+        (device) => device.in_use.toString() === this.filterStatus
       );
     }
   }
+
+  deleteDevice(deviceId: number): void {
+    this.deviceService.deleteDevice(deviceId).subscribe(() => {
+      this._snackBar.open('Dispositivo excluído com sucesso!', 'Fechar', {
+        duration: 3000, // Tempo da notificação (3 segundos)
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+
+      this.loadDevices(); // Atualiza a lista após excluir
+    }, error => {
+      this._snackBar.open('Erro ao excluir dispositivo!', 'Fechar', {
+        duration: 3000,
+        panelClass: ['snackbar-error']
+      });
+    });
+  }
+
 }

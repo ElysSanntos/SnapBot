@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Device } from '../models/device';
+
+
+
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeviceService {
-  private apiUrl = 'http://localhost:8000/api/devices';// URL da API Laravel
+  private apiUrl = 'http://localhost:8000/api/devices';
 
   constructor(private http: HttpClient) { }
 
@@ -15,6 +19,10 @@ export class DeviceService {
    getDevices(): Observable<any> {
     return this.http.get(this.apiUrl);
   }
+  getDeviceById(id: number): Observable<Device> {
+    return this.http.get<Device>(`${this.apiUrl}/${id}`);
+  }
+
 
   // Método para criar um novo dispositivo
   addDevice(device: any): Observable<any> {

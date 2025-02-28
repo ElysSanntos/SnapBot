@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DeviceService } from '../device.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-device-form',
@@ -12,62 +11,36 @@ import { Router } from '@angular/router';
 })
 
 export class DeviceFormComponent {
-  deviceForm: FormGroup;
-  deviceId?: number;
+  deviceForm!: NgForm;
 
-  constructor(
-    private fb: FormBuilder,
-    private deviceService: DeviceService,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) {
-    this.deviceForm = this.fb.group({
-      name: ['', Validators.required],
-      model: ['', Validators.required],
-      status: ['', Validators.required],
-      location: ['', Validators.required]
-    });
-  }
+  device = {
+    name: '',
+    location: '',
+    purchase_date: '',
+    model: '',
+    in_use: 0
+  };
 
-  onSubmit() {
-    if (this.deviceForm.invalid) return;
+  constructor(private deviceService: DeviceService) {}
 
-    // Ajusta os dados do formulário, incluindo o status e o campo in_use
-    const deviceData = {
-      ...this.deviceForm.value,
-      status: this.deviceForm.value.status === 'in_use' ? 'in_use' : 'out_of_use', // Mapeia status
-      in_use: this.deviceForm.value.status === 'in_use' ? true : false, // Mapeia o campo in_use
-      purchase_date: this.deviceForm.value.purchase_date || new Date().toISOString().split('T')[0] // Preenche com a data atual se estiver nulo
-    };
+  onSubmit(): void {
+    if (this.device.name && this.device.location && this.device.purchase_date) {
+      console.log('Formulário enviado com sucesso:', this.device);
 
-    if (this.deviceId) {
-      // Atualiza dispositivo existente
-      this.deviceService.updateDevice(this.deviceId, deviceData).subscribe(() => {
-        this.showMessage('Dispositivo atualizado com sucesso!');
-        this.router.navigate(['/devices']);
-        this.clearPurchaseDate(); // Limpa o campo de data
-      });
+      // Chama o serviço para adicionar o dispositivo
+      this.deviceService.addDevice(this.device).subscribe(
+        (response) => {
+          console.log('Dispositivo adicionado com sucesso:', response);
+          // Ações após envio com sucesso (ex: limpar formulário, redirecionar, etc.)
+        },
+        (error) => {
+          console.error('Erro ao adicionar dispositivo:', error);
+        }
+      );
     } else {
-      // Cria um novo dispositivo
-      this.deviceService.addDevice(deviceData).subscribe(() => {
-        this.showMessage('Dispositivo cadastrado com sucesso!');
-        this.deviceForm.reset();
-        this.clearPurchaseDate(); // Limpa o campo de data
-      });
+      console.log('Por favor, preencha todos os campos.');
     }
   }
-
-  // Função para limpar o campo purchase_date
-  clearPurchaseDate() {
-    this.deviceForm.patchValue({
-      purchase_date: null
-    });
-  }
-
-
-
-  // Função showMessage para exibir as mensagens de feedback
-  private showMessage(message: string) {
-    this.snackBar.open(message, 'Fechar', { duration: 3000 }); // Exibe a mensagem por 3 segundos
-  }
 }
+
+
