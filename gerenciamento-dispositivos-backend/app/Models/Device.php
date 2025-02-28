@@ -9,5 +9,5 @@ class Device extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'type', 'status']; // 🔹 Define os campos permitidos para preenchimento
+    protected $fillable = ['name', 'location', 'purchase_date', 'in_use']; // 🔹 Define os campos permitidos para preenchimento
 }
