@@ -1,36 +1,27 @@
-<!-- device-list.component.html -->
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Device Name </th>
-    <td mat-cell *matCellDef="let device">{{ device.name }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="model">
-    <th mat-header-cell *matHeaderCellDef> Model </th>
-    <td mat-cell *matCellDef="let device">{{ device.model }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="status">
-    <th mat-header-cell *matHeaderCellDef> Status </th>
-    <td mat-cell *matCellDef="let device">{{ device.status }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef> Actions </th>
-    <td mat-cell *matCellDef="let device">
-      <button mat-button (click)="editDevice(device)">Edit</button>
-
-      <button mat-button color="warn" (click)="deleteDevice(device.id)">Excluir</button>
-
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Purchase Date</th>
+      <th>In Use</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr *ngFor="let device of devices">
+      <td>{{ device.id }}</td>
+      <td>{{ device.name }}</td>
+      <td>{{ device.location }}</td>
+      <td>{{ device.purchase_date | date }}</td>
+      <td>{{ device.in_use ? 'Yes' : 'No' }}</td>
+    </tr>
+  </tbody>
 </table>
 
+
+<!-- Estilo e título -->
 <div style="background-color: yellow; padding: 20px;">
   <h2 style="color: red;">Lista de Dispositivos</h2>
 </div>
-
-

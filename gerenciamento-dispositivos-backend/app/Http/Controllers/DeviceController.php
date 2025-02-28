@@ -6,7 +6,8 @@ use App\Models\Device;
 
 class DeviceController extends Controller
 {
-    // Lista todos os dispositivos
+    
+// Lista todos os dispositivos
 public function index()
 {
     $devices = Device::all();
@@ -24,6 +25,7 @@ public function index()
         'data' => $devices
     ]);
 }
+
 
     // Cria um novo dispositivo
     public function store(Request $request)
