@@ -17,15 +17,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DeviceFormComponent } from './devices/device-form/device-form.component';
 import { DeviceListComponent } from './devices/device-list/device-list.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DeviceEditComponent } from './devices/device-edit/device-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DeviceListComponent,
-    DeviceFormComponent
+    DeviceFormComponent,
+    DeviceEditComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +47,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    FormsModule,
 
 
   ],
