@@ -1,5 +1,5 @@
 <div class="device-form-container">
-  <h2>Cadastrar Dispositivo</h2>
+  <h2>{{ deviceId ? 'Editar' : 'Cadastrar' }} Dispositivo</h2>
 
   <form [formGroup]="deviceForm" (ngSubmit)="onSubmit()" class="device-form">
     <mat-form-field appearance="outline">
@@ -19,25 +19,41 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
+      <mat-label>Localização</mat-label>
+      <input matInput formControlName="location" required />
+      <mat-error *ngIf="deviceForm.get('location')?.invalid && deviceForm.get('location')?.touched">
+        Localização obrigatória
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Data de Compra</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="purchase_date" required />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="deviceForm.get('purchase_date')?.invalid && deviceForm.get('purchase_date')?.touched">
+        Data obrigatória
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
       <mat-select formControlName="status">
-        <mat-option value="Disponível">Disponível</mat-option>
-        <mat-option value="Em uso">Em uso</mat-option>
-        <mat-option value="Manutenção">Manutenção</mat-option>
+        <mat-option value="available">Disponível</mat-option>
+        <mat-option value="in_use">Em uso</mat-option>
       </mat-select>
+      <mat-error *ngIf="deviceForm.get('status')?.invalid && deviceForm.get('status')?.touched">
+        Status obrigatório
+      </mat-error>
     </mat-form-field>
 
     <div class="form-actions">
       <button mat-raised-button color="primary" type="submit" [disabled]="deviceForm.invalid">
-        Cadastrar
+        {{ deviceId ? 'Atualizar' : 'Cadastrar' }}
       </button>
       <button mat-stroked-button color="warn" type="button" (click)="deviceForm.reset()">
         Limpar
       </button>
     </div>
   </form>
-</div>
-
-<div style="background-color: lightblue; padding: 20px;">
-  <h2 style="color: darkblue;">Formulário de Dispositivo</h2>
 </div>

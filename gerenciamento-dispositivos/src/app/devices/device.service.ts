@@ -18,6 +18,7 @@ export class DeviceService {
 
   // Método para criar um novo dispositivo
   addDevice(device: any): Observable<any> {
+    console.log('Enviando para API:', device);
     return this.http.post(this.apiUrl, device);
   }
 
@@ -28,6 +29,7 @@ export class DeviceService {
 
   // Método para deletar um dispositivo
   deleteDevice(id: number) {
-    return this.http.delete(`${this.apiUrl}/devices/${id}`);
+    return this.http.delete(`${this.apiUrl}/${id}`);
+
   }
 }
