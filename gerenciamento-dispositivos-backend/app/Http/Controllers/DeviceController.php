@@ -7,17 +7,23 @@ use App\Models\Device;
 
 class DeviceController extends Controller
 {
-    /*
+
     public function index()
-    {
-        return response()->json(Device::all());
-    }
-    */
+{
+    $devices = Device::all();
+
+    return response()->json([
+        'status' => 'ok',
+        'data' => $devices
+    ]);
+}
+
+    /*
     public function index()
 {
     return response()->json(['status' => 'ok']);
 }
-
+*/
     public function store(Request $request)
     {
         $device = Device::create($request->all());
