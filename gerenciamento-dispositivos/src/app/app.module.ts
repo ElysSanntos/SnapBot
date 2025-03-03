@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table'; 
 import { BrowserModule } from '@angular/platform-browser';
 
 // Angular Material Modules
@@ -15,17 +15,19 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DeviceFormComponent } from './devices/device-form/device-form.component';
 import { DeviceListComponent } from './devices/device-list/device-list.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     AppComponent,
+    DeviceFormComponent,
     DeviceListComponent,
-    DeviceFormComponent
   ],
   imports: [
     BrowserModule,
@@ -39,18 +41,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
-    MatInputModule,
-    MatButtonModule,
     MatSnackBarModule,
     ReactiveFormsModule,
-    HttpClientModule,
     BrowserAnimationsModule,
-
-
+    FormsModule,
+    RouterModule,
   ],
-  providers: [
-
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

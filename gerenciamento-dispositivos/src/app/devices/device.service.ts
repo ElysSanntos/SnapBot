@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+interface DeviceResponse {
+  data: any[];  
+}
 
 @Injectable({
   providedIn: 'root'

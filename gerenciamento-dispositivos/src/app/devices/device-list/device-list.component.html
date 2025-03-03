@@ -1,27 +1,57 @@
-<table class="table">
+<form [formGroup]="deviceForm">
+  <!-- Campo para o nome do dispositivo -->
+  <label for="name">Nome</label>
+  <input formControlName="name" id="name" placeholder="Digite o nome do dispositivo" />
+
+  <!-- Campo para o modelo do dispositivo -->
+  <label for="model">Modelo</label>
+  <input formControlName="model" id="model" placeholder="Digite o modelo do dispositivo" />
+
+  <!-- Campo para o status do dispositivo -->
+  <label for="status">Status</label>
+  <select formControlName="status" id="status">
+    <option value="Ativo">Ativo</option>
+    <option value="Inativo">Inativo</option>
+  </select>
+
+  <!-- Campo para a data de compra do dispositivo -->
+  <label for="purchase_date">Data de Compra</label>
+  <input formControlName="purchase_date" id="purchase_date" type="date" />
+</form>
+
+<!-- Filtro de status -->
+<div>
+  <label for="statusFilter">Filtrar dispositivos:</label>
+  <select id="statusFilter" [(ngModel)]="statusFilter" (change)="onStatusChange(statusFilter)">
+    <option value="Todos">Todos</option>
+    <option value="Ativo">Em uso</option>
+    <option value="Inativo">Disponível</option>
+  </select>
+</div>
+
+<!-- Tabela de dispositivos -->
+<table mat-table [dataSource]="filteredDataSource" class="table">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Location</th>
-      <th>Purchase Date</th>
-      <th>In Use</th>
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <th mat-header-cell *matHeaderCellDef>Location</th>
+      <th mat-header-cell *matHeaderCellDef>Purchase Date</th>
+      <th mat-header-cell *matHeaderCellDef>In Use</th>
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
     </tr>
   </thead>
   <tbody>
-    
-    <tr *ngFor="let device of devices">
-      <td>{{ device.id }}</td>
-      <td>{{ device.name }}</td>
-      <td>{{ device.location }}</td>
-      <td>{{ device.purchase_date | date }}</td>
-      <td>{{ device.in_use ? 'Yes' : 'No' }}</td>
+    <tr mat-row *matRowDef="let device; columns: displayedColumns;">
+      <td mat-cell>{{ device.id }}</td>
+      <td mat-cell>{{ device.name || 'N/A' }}</td>
+      <td mat-cell>{{ device.location || 'Localização não informada' }}</td>
+      <td mat-cell>{{ device.purchase_date ? (device.purchase_date | date) : 'Data não informada' }}</td>
+      <td mat-cell>{{ device.status || 'Status não informado' }}</td>
+      <td mat-cell>
+        <button (click)="editDevice(device)">Editar</button>
+        <button (click)="deleteDevice(device.id)">Excluir</button>
+      </td>
     </tr>
   </tbody>
 </table>
-
-
-<!-- Estilo e título -->
-<div style="background-color: yellow; padding: 20px;">
-  <h2 style="color: red;">Lista de Dispositivos</h2>
-</div>
