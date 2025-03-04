@@ -6,25 +6,19 @@ use App\Models\Device;
 
 class DeviceController extends Controller
 {
-    
-// Lista todos os dispositivos
-public function index()
-{
-    $devices = Device::all();
 
-    // Verifica se não há dispositivos
-    if ($devices->isEmpty()) {
+// Lista todos os dispositivos com paginação
+public function index(Request $request)
+    {
+        // Paginação dos dispositivos
+        $devices = Device::paginate($request->get('limit', 10));
+
         return response()->json([
-            'status' => 'erro',
-            'mensagem' => 'Nenhum dispositivo encontrado.'
-        ], 404);  // Retorna código 404 se não houver registros
+            'status' => 'ok',
+            'data' => $devices->items(),
+            'total' => $devices->total(),
+        ]);
     }
-
-    return response()->json([
-        'status' => 'ok',
-        'data' => $devices
-    ]);
-}
 
 
     // Cria um novo dispositivo

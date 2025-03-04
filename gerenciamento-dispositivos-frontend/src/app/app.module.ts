@@ -12,6 +12,8 @@ import { MatListModule } from '@angular/material/list';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { DispositivoListarModule } from './dispositivos/dispositivo-listar/dispositivo-listar.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatListModule,
     HttpClientModule,
     MatProgressSpinnerModule,
+    MatPaginatorModule,
+    DispositivoListarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

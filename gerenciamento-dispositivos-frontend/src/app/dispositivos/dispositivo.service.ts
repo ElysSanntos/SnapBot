@@ -13,11 +13,11 @@ export class DispositivoService {
 
   constructor(private HttpClient: HttpClient) { }
 
-  listar(): Observable<Dispositivos[]> {
-    return this.HttpClient.get<{status: string, data: Dispositivos[]}>(`${this.baseURL}/${this.endpoint}`)
-      .pipe(
-        map(response => response.data) // Extraindo apenas o array "data"
-      );
+  listarComPagina(pageIndex: number, pageSize: number): Observable<{ data: Dispositivos[], total: number }> {
+    return this.HttpClient.get<{status: string, data: Dispositivos[], total: number}>(
+      `${this.baseURL}/${this.endpoint}?page=${pageIndex + 1}&limit=${pageSize}`
+    ).pipe(
+      map(response => ({ data: response.data, total: response.total }))
+    );
   }
-
 }

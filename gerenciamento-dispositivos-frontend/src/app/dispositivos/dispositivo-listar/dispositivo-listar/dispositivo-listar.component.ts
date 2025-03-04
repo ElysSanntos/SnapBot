@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DispositivoService } from '../../dispositivo.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Dispositivos } from '../../dispositivo.model';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-dispositivo-listar',
@@ -11,11 +12,11 @@ import { Dispositivos } from '../../dispositivo.model';
 })
 export class DispositivoListarComponent implements OnInit {
 
-
-
   dispositivos$!: Observable<Dispositivos[]>;
-  colunasTabela: string[] = ['id', 'name','location','purchase_date','in_use'];
-
+  totalDevices: number = 0; // Total de dispositivos
+  pageSize: number = 10;    // Quantidade por página
+  pageIndex: number = 0;    // Página inicial
+  colunasTabela: string[] = ['id', 'name', 'location', 'purchase_date', 'in_use'];
 
   constructor(private dispositivoService: DispositivoService){}
 
@@ -23,8 +24,17 @@ export class DispositivoListarComponent implements OnInit {
     this.listarItens();
    }
 
-  listarItens(){
-    this.dispositivos$ = this.dispositivoService.listar();
+   listarItens(pageIndex: number = 0, pageSize: number = 10) {
+    this.dispositivoService.listarComPagina(pageIndex, pageSize).subscribe(response => {
+      this.dispositivos$ = of(response.data);
+      this.totalDevices = response.total;
+    });
+  }
+
+  pageChanged(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.listarItens(this.pageIndex, this.pageSize);
   }
 
 }

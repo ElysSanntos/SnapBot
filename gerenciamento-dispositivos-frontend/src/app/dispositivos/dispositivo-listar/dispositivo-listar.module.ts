@@ -6,6 +6,8 @@ import { DispositivoListarComponent } from './dispositivo-listar/dispositivo-lis
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     DispositivoListarRoutingModule,
     MatTableModule,
     MatProgressSpinnerModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatPaginatorModule
+
   ]
 })
 export class DispositivoListarModule { }
