@@ -14,7 +14,7 @@ export class DispositivoListarComponent implements OnInit {
 
 
   dispositivos$!: Observable<Dispositivos[]>;
-  colunasTabela: string[] = ['id', 'name'];
+  colunasTabela: string[] = ['id', 'name','location','purchase_date','in_use'];
 
 
   constructor(private dispositivoService: DispositivoService){}
