@@ -20,3 +20,9 @@ table {
   margin-left: 30%;
   margin-top: 10%;
 }
+.editar-link {
+  margin-left: 10px; /* Adiciona espaço entre o nome e o link */
+  text-decoration: underline; /* Opcional: deixa o link mais visível */
+  color: blue; /* Opcional: estiliza o link */
+  cursor: pointer;
+}

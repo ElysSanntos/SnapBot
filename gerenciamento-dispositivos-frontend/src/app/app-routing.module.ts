@@ -19,6 +19,10 @@ const routes: Routes = [
    loadChildren:()=> import('./dispositivos/dispositivo-cadastrar-editar/dispositivo-cadastrar-editar.module').
    then(modulo => modulo.DispositivoCadastrarEditarModule)
   },
+  { path: "dispositivos/editar/:id",
+  loadChildren: () => import('./dispositivos/dispositivo-cadastrar-editar/dispositivo-cadastrar-editar.module').
+  then(m => m.DispositivoCadastrarEditarModule) }
+
 ];
 
 @NgModule({

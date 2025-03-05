@@ -26,6 +26,13 @@ export class DispositivoService {
     return this.HttpClient.post<Dispositivos>(`${this.baseURL}/${this.endpoint}`,dispositivo)
 
   }
- 
+  obterPorId(id: number): Observable<Dispositivos> {
+    return this.HttpClient.get<Dispositivos>(`${this.baseURL}/${this.endpoint}/${id}`);
+  }
+
+  editar(id: number, dispositivo: Dispositivos): Observable<Dispositivos> {
+    return this.HttpClient.put<Dispositivos>(`${this.baseURL}/${this.endpoint}/${id}`, dispositivo);
+  }
+
 
 }

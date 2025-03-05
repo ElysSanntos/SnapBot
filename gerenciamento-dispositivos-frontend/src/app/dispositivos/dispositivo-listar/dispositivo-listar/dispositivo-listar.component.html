@@ -15,11 +15,16 @@
         <td mat-cell *matCellDef="let dispositivo"> {{dispositivo.id}} </td>
       </ng-container>
 
-      <!-- Nome -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Nome </th>
-        <td mat-cell *matCellDef="let dispositivo"> {{dispositivo.name}} </td>
-      </ng-container>
+ <!-- Nome -->
+<ng-container matColumnDef="name">
+  <th mat-header-cell *matHeaderCellDef> Nome </th>
+  <td mat-cell *matCellDef="let dispositivo">
+    {{dispositivo.name}}
+    <a [routerLink]="['/dispositivos/editar', dispositivo.id]" class="editar-link">Editar</a>
+  </td>
+</ng-container>
+
+
 
       <!-- Localização -->
       <ng-container matColumnDef="location">
