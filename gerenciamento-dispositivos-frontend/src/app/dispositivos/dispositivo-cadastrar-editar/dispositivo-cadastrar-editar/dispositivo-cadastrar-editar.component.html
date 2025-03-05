@@ -1,7 +1,17 @@
 <mat-toolbar>Cadastrar Dispositivo</mat-toolbar>
 
 <div class="component-container">
-  <form class="form-padrao" *ngIf="formGroup" [formGroup]="formGroup" (ngSubmit)="formGroup.valid && salvar()" novalidate>
+  <!-- Mensagem de sucesso -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+
+  <!-- Mensagem de erro -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <form class="form-padrao" *ngIf="formGroup" [formGroup]="formGroup" (ngSubmit)="onSubmit()" novalidate>
     <!-- Nome -->
     <mat-form-field appearance="outline">
       <mat-label>Nome</mat-label>
@@ -16,15 +26,14 @@
       <mat-error>O Campo é obrigatório</mat-error>
     </mat-form-field>
 
-  <!-- Data de Compra -->
-  <mat-form-field appearance="outline">
-    <mat-label>Data de Compra</mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="purchase_date" required autocomplete="off">
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-    <mat-error>O Campo é obrigatório</mat-error>
-  </mat-form-field>
-
+    <!-- Data de Compra -->
+    <mat-form-field appearance="outline">
+      <mat-label>Data de Compra</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="purchase_date" required autocomplete="off">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error>O Campo é obrigatório</mat-error>
+    </mat-form-field>
 
     <!-- Status -->
     <mat-form-field appearance="outline">
@@ -39,8 +48,6 @@
     <div class="linha-botoes">
       <button mat-raised-button color="primary" [disabled]="!formGroup.valid">Salvar</button>
       <button type="button" mat-raised-button routerLink="/dispositivos">Cancelar</button>
-
     </div>
-
   </form>
 </div>
