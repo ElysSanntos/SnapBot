@@ -1,0 +1,46 @@
+<mat-toolbar>Cadastrar Dispositivo</mat-toolbar>
+
+<div class="component-container">
+  <form class="form-padrao" *ngIf="formGroup" [formGroup]="formGroup" (ngSubmit)="formGroup.valid && salvar()" novalidate>
+    <!-- Nome -->
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" required autocomplete="off">
+      <mat-error>O Campo é obrigatório</mat-error>
+    </mat-form-field>
+
+    <!-- Localização -->
+    <mat-form-field appearance="outline">
+      <mat-label>Localização</mat-label>
+      <input matInput formControlName="location" required autocomplete="off">
+      <mat-error>O Campo é obrigatório</mat-error>
+    </mat-form-field>
+
+  <!-- Data de Compra -->
+  <mat-form-field appearance="outline">
+    <mat-label>Data de Compra</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="purchase_date" required autocomplete="off">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error>O Campo é obrigatório</mat-error>
+  </mat-form-field>
+
+
+    <!-- Status -->
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="in_use" required>
+        <mat-option [value]="true">Em uso</mat-option>
+        <mat-option [value]="false">Disponível</mat-option>
+      </mat-select>
+      <mat-error>O campo é obrigatório</mat-error>
+    </mat-form-field>
+
+    <div class="linha-botoes">
+      <button mat-raised-button color="primary" [disabled]="!formGroup.valid">Salvar</button>
+      <button type="button" mat-raised-button routerLink="/dispositivos">Cancelar</button>
+
+    </div>
+
+  </form>
+</div>

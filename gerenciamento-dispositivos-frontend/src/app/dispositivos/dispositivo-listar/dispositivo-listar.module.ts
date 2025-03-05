@@ -7,6 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
 
 
 
@@ -20,7 +21,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatTableModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatButtonModule
 
   ]
 })

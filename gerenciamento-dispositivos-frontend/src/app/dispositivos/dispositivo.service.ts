@@ -20,4 +20,12 @@ export class DispositivoService {
       map(response => ({ data: response.data, total: response.total }))
     );
   }
+
+  cadastrar(dispositivo: Dispositivos): Observable<Dispositivos> {
+
+    return this.HttpClient.post<Dispositivos>(`${this.baseURL}/${this.endpoint}`,dispositivo)
+
+  }
+ 
+
 }

@@ -14,6 +14,9 @@ import { HttpClientModule } from '@angular/common/http';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { DispositivoListarModule } from './dispositivos/dispositivo-listar/dispositivo-listar.module';
+import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
 
 @NgModule({
   declarations: [
@@ -32,9 +35,11 @@ import { DispositivoListarModule } from './dispositivos/dispositivo-listar/dispo
     HttpClientModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
-    DispositivoListarModule
+    DispositivoListarModule,
+    MatNativeDateModule,
+    MatDatepickerModule
   ],
-  providers: [],
+  providers: [provideNativeDateAdapter()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
