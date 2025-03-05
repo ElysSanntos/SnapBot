@@ -16,6 +16,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { DispositivoListarModule } from './dispositivos/dispositivo-listar/dispositivo-listar.module';
 import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 
 @NgModule({
@@ -37,7 +39,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatPaginatorModule,
     DispositivoListarModule,
     MatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatSnackBarModule
   ],
   providers: [provideNativeDateAdapter()],
   bootstrap: [AppComponent]

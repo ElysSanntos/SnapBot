@@ -11,7 +11,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatNativeDateModule, MatOption} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
   declarations: [
     DispositivoCadastrarEditarComponent
@@ -28,7 +28,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatOption,
     MatDatepickerModule,
     MatSelectModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSnackBarModule
   ],
 })
 export class DispositivoCadastrarEditarModule { }

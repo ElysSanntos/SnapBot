@@ -34,5 +34,8 @@ export class DispositivoService {
     return this.HttpClient.put<Dispositivos>(`${this.baseURL}/${this.endpoint}/${id}`, dispositivo);
   }
 
+delete(id: number): Observable<void> {
+  return this.HttpClient.delete<void>(`${this.baseURL}/${this.endpoint}/${id}`);
+}
 
 }

@@ -9,22 +9,30 @@
 
     <table mat-table [dataSource]="dispositivos" class="mat-elevation-z8">
 
+      <!-- Coluna de Ação (Excluir) -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let dispositivo">
+          <!-- Botão de Excluir -->
+          <button mat-raised-button color="warn" class="excluir-botao" (click)="onDelete(dispositivo.id)">Excluir</button>
+
+        </td>
+      </ng-container>
+
       <!-- ID -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> ID </th>
         <td mat-cell *matCellDef="let dispositivo"> {{dispositivo.id}} </td>
       </ng-container>
 
- <!-- Nome -->
-<ng-container matColumnDef="name">
-  <th mat-header-cell *matHeaderCellDef> Nome </th>
-  <td mat-cell *matCellDef="let dispositivo">
-    {{dispositivo.name}}
-    <a [routerLink]="['/dispositivos/editar', dispositivo.id]" class="editar-link">Editar</a>
-  </td>
-</ng-container>
-
-
+      <!-- Nome -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Nome </th>
+        <td mat-cell *matCellDef="let dispositivo">
+          {{dispositivo.name}}
+          <a [routerLink]="['/dispositivos/editar', dispositivo.id]" class="editar-link">Editar</a>
+        </td>
+      </ng-container>
 
       <!-- Localização -->
       <ng-container matColumnDef="location">
@@ -52,22 +60,19 @@
 
     </table>
 
+    <!-- Botões de Ação -->
+    <div class="linha-botoes">
+      <button mat-raised-button color="primary" routerLink="/dispositivos/cadastrar">Cadastrar</button>
+    </div>
 
-  <div class="linha-botoes">
-    <button mat-raised-button color="primary" routerLink="/dispositivos/cadastrar">Cadastrar</button>
-    <button mat-raised-button disabled>Disabled</button>
-    <a mat-raised-button href="https://www.google.com/" target="_blank">Link</a>
-  </div>
-
-        <!-- Paginação -->
+    <!-- Paginação -->
     <mat-paginator
-    [length]="totalDevices"
-    [pageSize]="pageSize"
-    [pageSizeOptions]="[5, 10, 25, 100]"
-    aria-label="Select page"
-    (page)="pageChanged($event)">
+      [length]="totalDevices"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Select page"
+      (page)="pageChanged($event)">
     </mat-paginator>
-
 
   </div>
 </div>
