@@ -1,45 +1,68 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DispositivoService } from '../../dispositivo.service';
+import { Dispositivos } from '../../dispositivo.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-
-
 @Component({
-  selector: 'app-device-form',
-  standalone: false,
-  templateUrl: './device-form.component.html',
-  styleUrls: ['./device-form.component.scss']
+  selector: 'app-dispositivo-form',
+  stantalone: false;
+  templateUrl: './dispositivo-form.component.html',
+  styleUrls: ['./dispositivo-form.component.scss']
 })
-export class DeviceFormComponent implements OnInit {
-  @Input() deviceId: number | undefined;
-  deviceForm!: FormGroup;
+export class DispositivoFormComponent implements OnInit {
+  dispositivoId: number | null = null;
+  dispositivo: Dispositivos | null = null;
 
   constructor(
-    private fb: FormBuilder,
-    private snackBar: MatSnackBar
-  ) {}
+    private activatedRoute: ActivatedRoute,
+    private dispositivoService: DispositivoService,
+    private router: Router,
+    private snackBar: MatSnackBar // Adicionando MatSnackBar
+  ) { }
 
   ngOnInit(): void {
-    // Inicializando o FormGroup com os controles
-    this.deviceForm = this.fb.group({
-      name: ['', Validators.required],
-      model: ['', Validators.required],
-      location: ['', Validators.required],
-      purchase_date: ['', Validators.required],
-      in_use: [false]  // Controle de status
-    });
+    // Pega o id da rota
+    this.dispositivoId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+
+    if (this.dispositivoId) {
+      // Caso haja um ID, estamos editando, então podemos buscar o dispositivo
+      this.dispositivoService.buscarPorId(this.dispositivoId).subscribe((response) => {
+        this.dispositivo = response;
+      });
+    }
   }
 
-  onSubmit() {
-    if (this.deviceForm.valid) {
-      // Exemplo de uso do MatSnackBar
-      this.snackBar.open('Dispositivo salvo com sucesso!', 'Fechar', {
-        duration: 3000,  // A duração do SnackBar
-      });
+  get buttonLabel(): string {
+    return this.dispositivoId ? 'Editar Dispositivo' : 'Cadastrar Dispositivo';
+  }
+
+  // Método para salvar ou atualizar o dispositivo
+  salvar(): void {
+    if (this.dispositivoId) {
+      // Atualizando dispositivo
+      this.dispositivoService.atualizar(this.dispositivoId, this.dispositivo).subscribe(
+        () => {
+          // Exibe a mensagem de sucesso com padrão de exclusão
+          this.snackBar.open('Dispositivo alterado com sucesso!', 'Fechar', { duration: 3000 });
+          this.router.navigate(['/dispositivos']);
+        },
+        () => {
+          // Em caso de erro
+          this.snackBar.open('Erro ao alterar dispositivo. Tente novamente!', 'Fechar', { duration: 3000 });
+        }
+      );
     } else {
-      this.snackBar.open('Por favor, preencha todos os campos!', 'Fechar', {
-        duration: 3000,
-      });
+      // Cadastro de dispositivo
+      this.dispositivoService.cadastrar(this.dispositivo).subscribe(
+        () => {
+          this.snackBar.open('Dispositivo cadastrado com sucesso!', 'Fechar', { duration: 3000 });
+          this.router.navigate(['/dispositivos']);
+        },
+        () => {
+          this.snackBar.open('Erro ao cadastrar dispositivo. Tente novamente!', 'Fechar', { duration: 3000 });
+        }
+      );
     }
   }
 }

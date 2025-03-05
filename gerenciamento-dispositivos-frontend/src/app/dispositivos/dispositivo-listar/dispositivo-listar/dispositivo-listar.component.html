@@ -9,70 +9,56 @@
 
     <table mat-table [dataSource]="dispositivos" class="mat-elevation-z8">
 
-      <!-- Coluna de Ação (Excluir) -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <th mat-header-cell *matHeaderCellDef class="actions-header"> Ações </th>
         <td mat-cell *matCellDef="let dispositivo">
-          <!-- Botão de Excluir -->
-          <button mat-raised-button color="warn" class="excluir-botao" (click)="onDelete(dispositivo.id)">Excluir</button>
-
+          <div class="linha-botoes">
+            <button mat-raised-button color="primary" [routerLink]="['/dispositivos', dispositivo.id ? 'editar' : 'cadastrar', dispositivo.id]">
+              {{ dispositivo.id ? 'Editar Dispositivo' : 'Cadastrar Dispositivo' }}
+            </button>
+            <button mat-raised-button color="warn" class="excluir-botao" (click)="onDelete(dispositivo.id)">Excluir</button>
+          </div>
         </td>
       </ng-container>
 
-      <!-- ID -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> ID </th>
         <td mat-cell *matCellDef="let dispositivo"> {{dispositivo.id}} </td>
       </ng-container>
 
-      <!-- Nome -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Nome </th>
-        <td mat-cell *matCellDef="let dispositivo">
-          {{dispositivo.name}}
-          <a [routerLink]="['/dispositivos/editar', dispositivo.id]" class="editar-link">Editar</a>
-        </td>
+        <td mat-cell *matCellDef="let dispositivo">{{dispositivo.name}}</td>
       </ng-container>
 
-      <!-- Localização -->
       <ng-container matColumnDef="location">
         <th mat-header-cell *matHeaderCellDef> Localização </th>
-        <td mat-cell *matCellDef="let dispositivo"> {{dispositivo.location}} </td>
+        <td mat-cell *matCellDef="let dispositivo">{{dispositivo.location}}</td>
       </ng-container>
 
-      <!-- Data de Compra -->
       <ng-container matColumnDef="purchase_date">
         <th mat-header-cell *matHeaderCellDef> Dta_Cadastro </th>
-        <td mat-cell *matCellDef="let dispositivo"> {{dispositivo.purchase_date | date: 'dd/MM/yyyy'}} </td>
+        <td mat-cell *matCellDef="let dispositivo">{{dispositivo.purchase_date | date: 'dd/MM/yyyy'}}</td>
       </ng-container>
 
-      <!-- Status (in_use) -->
       <ng-container matColumnDef="in_use">
         <th mat-header-cell *matHeaderCellDef> Status</th>
-        <td mat-cell *matCellDef="let dispositivo">
-          {{ dispositivo.in_use ? 'Em uso' : 'Disponível' }}
-        </td>
+        <td mat-cell *matCellDef="let dispositivo">{{ dispositivo.in_use ? 'Em uso' : 'Disponível' }}</td>
       </ng-container>
 
-      <!-- Cabeçalho e Linhas -->
       <tr mat-header-row *matHeaderRowDef="colunasTabela"></tr>
       <tr mat-row *matRowDef="let row; columns: colunasTabela;"></tr>
 
     </table>
 
-    <!-- Botões de Ação -->
     <div class="linha-botoes">
-      <button mat-raised-button color="primary" routerLink="/dispositivos/cadastrar">Cadastrar</button>
+      <button mat-raised-button color="primary" routerLink="/dispositivos/cadastrar">Cadastrar Novo Dispositivo</button>
     </div>
 
-    <!-- Paginação -->
-    <mat-paginator
-      [length]="totalDevices"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="[5, 10, 25, 100]"
-      aria-label="Select page"
-      (page)="pageChanged($event)">
-    </mat-paginator>
+    <div class="paginacao-container">
+      <mat-paginator [length]="totalDevices" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageChanged($event)">
+      </mat-paginator>
+    </div>
 
   </div>
 </div>
