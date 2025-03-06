@@ -17,18 +17,18 @@ export class DispositivoListarComponent implements OnInit {
   totalDevices: number = 0; // Total de dispositivos
   pageSize: number = 10;    // Quantidade por página
   pageIndex: number = 0;    // Página inicial
-  colunasTabela: string[] = ['id', 'name', 'location', 'purchase_date', 'in_use','actions'];
+  colunasTabela: string[] = ['id', 'name', 'location', 'purchase_date', 'in_use', 'actions'];
 
   constructor(
     private dispositivoService: DispositivoService,
     private snackBar: MatSnackBar,
-    ){}
+  ) { }
 
   ngOnInit() {
     this.listarItens();
-   }
+  }
 
-   listarItens(pageIndex: number = 0, pageSize: number = 10) {
+  listarItens(pageIndex: number = 0, pageSize: number = 10) {
     this.dispositivoService.listarComPagina(pageIndex, pageSize).subscribe(response => {
       this.dispositivos$ = of(response.data);
       this.totalDevices = response.total;
@@ -56,6 +56,23 @@ export class DispositivoListarComponent implements OnInit {
     }
   }
 
+  alterarStatus(dispositivo: Dispositivos): void {
+    // Inverte o valor de in_use
+    const novoStatus = !dispositivo.in_use;
+
+    // Atualiza o dispositivo com o novo status
+    dispositivo.in_use = novoStatus;
+
+    this.dispositivoService.editar(dispositivo.id, dispositivo).subscribe(
+      (response) => {
+        this.snackBar.open('Status atualizado com sucesso!', 'Fechar', { duration: 3000 });
+        this.listarItens(this.pageIndex, this.pageSize); // Atualiza a lista de dispositivos
+      },
+      (error) => {
+        this.snackBar.open('Erro ao atualizar o status. Tente novamente!', 'Fechar', { duration: 3000 });
+      }
+    );
+  }
+
+
 }
-
-

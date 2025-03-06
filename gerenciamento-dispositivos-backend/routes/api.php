@@ -10,6 +10,8 @@ Route::get('/devices/{id}', [DeviceController::class, 'show']);
 Route::put('/devices/{id}', [DeviceController::class, 'update']);
 Route::delete('/devices/{id}', [DeviceController::class, 'destroy']);
 Route::patch('/devices/{id}', [DeviceController::class, 'update']);
+Route::patch('devices/{id}/use', [DispositivoController::class, 'marcarComoEmUso']);
+
 
 
 
