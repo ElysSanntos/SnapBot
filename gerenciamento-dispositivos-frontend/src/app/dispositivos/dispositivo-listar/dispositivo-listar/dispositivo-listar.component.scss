@@ -1,5 +1,7 @@
+/* Estilo para a tabela */
 table {
   width: 100%;
+  border-collapse: collapse; /* Para melhorar o layout da tabela */
 }
 
 /* Centralizando o título da coluna "Ações" */
@@ -7,6 +9,7 @@ table {
   text-align: center;
 }
 
+/* Estilo para o container da tabela */
 .table-container {
   min-height: 300px;
   max-height: 300px;
@@ -14,20 +17,70 @@ table {
   background-color: white;
 }
 
+/* Estilo para o spinner (carregando) */
 .spinner {
   position: relative;
   margin-left: 45%;
   margin-top: 10%;
 }
 
+/* Estilo para mensagem quando não há registros */
 .mensagem-sem-registros {
   position: relative;
   margin-left: 30%;
   margin-top: 10%;
 }
+
+/* Estilo para o link "Editar" */
 .editar-link {
   margin-left: 10px; /* Adiciona espaço entre o nome e o link */
-  text-decoration: underline; /* Opcional: deixa o link mais visível */
-  color: blue; /* Opcional: estiliza o link */
-  cursor: pointer;
+  text-decoration: underline; /* Deixa o link mais visível */
+  color: blue; /* Colorido de azul */
+  cursor: pointer; /* Aponta o cursor quando em cima */
+}
+
+/* Cor personalizada para o botão "Em Uso" */
+.in-use {
+  background-color: lightgray;
+  color: black;
+}
+
+/* Cor personalizada para o botão "Disponível" */
+.disponivel {
+  background-color: rgb(159, 202, 159);
+  color: black;
+}
+
+/* Estilo base para os botões */
+button {
+  margin: 5px;
+  padding: 8px 12px; /* Ajusta o tamanho do botão */
+  border-radius: 12px; /* Bordas mais arredondadas */
+  font-size: 14px; /* Ajuste do tamanho da fonte */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transição suave */
+}
+
+/* Botão Editar (cor azul claro) */
+button[mat-button][color="primary"] {
+  background-color: rgb(219, 237, 243);
+  color: black;
+  border: 1px solid #3399ff; /* Cor de borda mais intensa */
+}
+
+button[mat-button][color="primary"]:hover {
+  background-color: #66ccff; /* Cor de hover mais forte */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra mais forte no hover */
+}
+
+/* Botão Excluir (cor vermelha clara) */
+button[mat-button][color="warn"] {
+  background-color: #e0b3b3;
+  color: red;
+  border: 1px solid #ff6666; /* Borda vermelha suave */
+}
+
+button[mat-button][color="warn"]:hover {
+  background-color: #ff6666; /* Cor de hover mais intensa */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra mais forte no hover */
 }

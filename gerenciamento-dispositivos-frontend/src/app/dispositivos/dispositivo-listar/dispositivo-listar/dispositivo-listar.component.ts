@@ -10,20 +10,18 @@ import { MatTableDataSource } from '@angular/material/table';
   selector: 'app-dispositivo-listar',
   standalone: false,
   templateUrl: './dispositivo-listar.component.html',
-  styleUrl: './dispositivo-listar.component.scss'
+  styleUrls: ['./dispositivo-listar.component.scss']
 })
 export class DispositivoListarComponent implements OnInit {
 
-  dispositivos$: Observable<Dispositivos[]> = new Observable(); // Observable para os dados
-  dataSource: MatTableDataSource<Dispositivos> = new MatTableDataSource(); // DataSource para controle da tabela
+  dispositivos$: Observable<Dispositivos[]> = new Observable();
+  dataSource: MatTableDataSource<Dispositivos> = new MatTableDataSource();
   totalDevices: number = 0;
   pageSize: number = 5;
   pageIndex: number = 0;
   colunasTabela: string[] = ['id', 'name', 'location', 'purchase_date', 'in_use', 'actions'];
   dispositivos: Dispositivos[] = [];
-  devices: Dispositivos[] = [];
-
-  selectedStatus: 'Em Uso' | 'Disponível' | '' = '';  // Para armazenar o status selecionado
+  selectedStatus: 'Em Uso' | 'Disponível' | '' = '';
 
   constructor(
     private dispositivoService: DispositivoService,
@@ -37,20 +35,18 @@ export class DispositivoListarComponent implements OnInit {
   listarItens(pageIndex: number = 0, pageSize: number = 10) {
     this.dispositivoService.listarComPagina(pageIndex, pageSize).subscribe(response => {
       this.dispositivos = response.data;
-      this.devices = response.data;
       this.dataSource.data = this.dispositivos;
       this.totalDevices = response.total;
     });
   }
 
-  // Método para aplicar o filtro por status
   applyStatusFilter(): void {
     if (this.selectedStatus === 'Em Uso') {
       this.dataSource.data = this.dispositivos.filter(device => device.in_use);
     } else if (this.selectedStatus === 'Disponível') {
       this.dataSource.data = this.dispositivos.filter(device => !device.in_use);
     } else {
-      this.dataSource.data = this.dispositivos; // Sem filtro, exibe todos
+      this.dataSource.data = this.dispositivos;
     }
   }
 
@@ -88,5 +84,11 @@ export class DispositivoListarComponent implements OnInit {
         this.snackBar.open('Erro ao atualizar o status. Tente novamente!', 'Fechar', { duration: 3000 });
       }
     );
+  }
+
+  onEdit(dispositivo: Dispositivos): void {
+    // Lógica para editar dispositivo (por exemplo, redirecionar ou abrir um modal)
+    console.log('Editando dispositivo', dispositivo);
+    // Aqui você pode redirecionar para outra página ou abrir um modal para edição
   }
 }
