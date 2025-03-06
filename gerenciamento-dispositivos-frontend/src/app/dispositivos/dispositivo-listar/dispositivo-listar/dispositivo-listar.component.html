@@ -1,3 +1,14 @@
+<div class="filter-container">
+  <mat-form-field appearance="fill">
+    <mat-label>Filtro por status</mat-label>
+    <mat-select [(value)]="selectedStatus" (selectionChange)="applyStatusFilter()">
+      <mat-option value="">Todos</mat-option>
+      <mat-option value="Em Uso">Em Uso</mat-option>
+      <mat-option value="Disponível">Disponível</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> ID </th>
