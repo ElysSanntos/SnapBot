@@ -30,6 +30,8 @@ export class DispositivoListarComponent implements OnInit {
 
   ngOnInit() {
     this.listarItens();
+    this.pageSize = 5;  // Define a quantidade inicial de itens
+    this.listarItens(this.pageIndex, this.pageSize);
   }
 
   listarItens(pageIndex: number = 0, pageSize: number = 10) {
@@ -65,7 +67,7 @@ export class DispositivoListarComponent implements OnInit {
   }
 
   pageChanged(event: PageEvent) {
-    this.pageSize = event.pageSize;
+    this.pageSize = 5;  // Garantir que a página sempre exiba 5 itens
     this.pageIndex = event.pageIndex;
     this.listarItens(this.pageIndex, this.pageSize);
   }
