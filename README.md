@@ -161,6 +161,98 @@ No frontend, você tem o formulário de cadastro e edição de dispositivos. O f
 - Inclui um botão **"Marcar como Em Uso"**.
 
 ---
+# **Arvore Simplificado**
+📂 .vscode
+📂 Estudos
+📂 gerenciamento-dispositivos-backend
+|   +---app
+|   |   +---Http
+|   |   |   +---Controllers
+|   |   |   |       Controller.php
+|   |   |   |       DeviceController.php
+|   |   |   |       ProductController.php
+|   |   |   |       TestDeviceController.php
+|   |   |   |       
+|   |   |   \---Middleware        
+|   |   +---Models
+|   |   |       Device.php
+|   |   |       User.php
+|   |   |       
+|   |   \---Providers
+|   |           AppServiceProvider.php
+|   |           AuthServiceProvider.php
+|   |           EventServiceProvider.php
+|   |           RouteServiceProvider.php
+|   |           
+|   +---bootstrap
+|   +---config
+|   +---database
+|   |   |   .gitignore
+|   |   |   database.sqlite
+|   |   |   
+|   |   +---factories
+|   |   |       DeviceFactory.php
+|   |   |       UserFactory.php
+|   |   |       
+|   |   +---migrations
+|   |   |       0001_01_01_000000_create_users_table.php
+|   |   |       0001_01_01_000001_create_cache_table.php
+|   |   |       0001_01_01_000002_create_jobs_table.php
+|   |   |       2025_02_27_000103_create_devices_table.php
+|   |   |       
+|   |   \---seeders
+|   |           DatabaseSeeder.php
+|   |           
+|   +---public
+|   +---resources
+|   |           
+|   +---routes
+|   |       api.php
+|   |       console.php
+|   |       web.php
+|   |       
+|   +---storage
+|   +---tests
+|   \---vendor           
+
+
+📂 gerenciamento-dispositivos-frontend
+    ├── .angular
+    |   \---cache
+    |       \---19.2.0
+    ├── .vscode
+    ├── node_modules
+    ├── public
+    ├── src
+    ├── app
+        ├── dispositivos
+                    ├── dispositivo-cadastrar-editar
+                        ├── dispositivo-cadastrar-editar-routing.module.ts
+                        ├── dispositivo-cadastrar-editar.module.ts
+                    ├── dispositivo-listar
+                        ├── dispositivo-listar-routing.module.ts
+                        ├── dispositivo-listar.module.ts
+                        ├── dispositivo-listar
+                            ├── dispositivo-listar.component.html
+                            ├── dispositivo-listar.component.scss
+                            ├── dispositivo-listar.component.spec.ts
+                            ├── dispositivo-listar.component.ts
+                    ├── dispositivo.model.ts
+                    ├── dispositivo.service.spec.ts
+                    ├── dispositivo.service.ts
+                ├── home
+                ├── main-nav
+                ├── app-routing.module.ts
+                ├── app.component.html
+                ├── app.component.scss
+                ├── app.component.spec.ts
+                ├── app.component.ts
+                ├── app.module.ts
+            ├── index.html
+            ├── main.ts
+            ├── styles.scss
+    ├── vendor
+
 
 ## Imagens do Sistema
 
