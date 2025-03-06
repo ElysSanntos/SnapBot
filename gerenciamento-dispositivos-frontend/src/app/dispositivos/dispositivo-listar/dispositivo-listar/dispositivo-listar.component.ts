@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DispositivoService } from '../../dispositivo.service';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Dispositivos } from '../../dispositivo.model';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-dispositivo-listar',
@@ -13,11 +14,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class DispositivoListarComponent implements OnInit {
 
-  dispositivos$!: Observable<Dispositivos[]>;
-  totalDevices: number = 0; // Total de dispositivos
-  pageSize: number = 10;    // Quantidade por página
-  pageIndex: number = 0;    // Página inicial
+  dispositivos$: Observable<Dispositivos[]> = new Observable(); // Observable para os dados
+  dataSource: MatTableDataSource<Dispositivos> = new MatTableDataSource(); // DataSource para controle da tabela
+  totalDevices: number = 0;
+  pageSize: number = 5;
+  pageIndex: number = 0;
   colunasTabela: string[] = ['id', 'name', 'location', 'purchase_date', 'in_use', 'actions'];
+  dispositivos: Dispositivos[] = [];
+  devices: Dispositivos[] = [];
+
+  selectedStatus: 'Em Uso' | 'Disponível' | '' = '';  // Para armazenar o status selecionado
 
   constructor(
     private dispositivoService: DispositivoService,
@@ -30,9 +36,22 @@ export class DispositivoListarComponent implements OnInit {
 
   listarItens(pageIndex: number = 0, pageSize: number = 10) {
     this.dispositivoService.listarComPagina(pageIndex, pageSize).subscribe(response => {
-      this.dispositivos$ = of(response.data);
+      this.dispositivos = response.data;
+      this.devices = response.data;
+      this.dataSource.data = this.dispositivos;
       this.totalDevices = response.total;
     });
+  }
+
+  // Método para aplicar o filtro por status
+  applyStatusFilter(): void {
+    if (this.selectedStatus === 'Em Uso') {
+      this.dataSource.data = this.dispositivos.filter(device => device.in_use);
+    } else if (this.selectedStatus === 'Disponível') {
+      this.dataSource.data = this.dispositivos.filter(device => !device.in_use);
+    } else {
+      this.dataSource.data = this.dispositivos; // Sem filtro, exibe todos
+    }
   }
 
   pageChanged(event: PageEvent) {
@@ -47,7 +66,7 @@ export class DispositivoListarComponent implements OnInit {
       this.dispositivoService.delete(id).subscribe(
         () => {
           this.snackBar.open('Dispositivo excluído com sucesso!', 'Fechar', { duration: 3000 });
-          this.listarItens(this.pageIndex, this.pageSize); // Corrigido para listarItens
+          this.listarItens(this.pageIndex, this.pageSize);
         },
         () => {
           this.snackBar.open('Erro ao excluir dispositivo. Tente novamente!', 'Fechar', { duration: 3000 });
@@ -57,22 +76,17 @@ export class DispositivoListarComponent implements OnInit {
   }
 
   alterarStatus(dispositivo: Dispositivos): void {
-    // Inverte o valor de in_use
     const novoStatus = !dispositivo.in_use;
-
-    // Atualiza o dispositivo com o novo status
     dispositivo.in_use = novoStatus;
 
     this.dispositivoService.editar(dispositivo.id, dispositivo).subscribe(
-      (response) => {
+      () => {
         this.snackBar.open('Status atualizado com sucesso!', 'Fechar', { duration: 3000 });
-        this.listarItens(this.pageIndex, this.pageSize); // Atualiza a lista de dispositivos
+        this.listarItens(this.pageIndex, this.pageSize);
       },
-      (error) => {
+      () => {
         this.snackBar.open('Erro ao atualizar o status. Tente novamente!', 'Fechar', { duration: 3000 });
       }
     );
   }
-
-
 }

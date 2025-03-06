@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table'; 
+import { MatTableModule } from '@angular/material/table';
 import { BrowserModule } from '@angular/platform-browser';
 
 // Angular Material Modules
@@ -46,6 +46,7 @@ import { RouterModule } from '@angular/router';
     BrowserAnimationsModule,
     FormsModule,
     RouterModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

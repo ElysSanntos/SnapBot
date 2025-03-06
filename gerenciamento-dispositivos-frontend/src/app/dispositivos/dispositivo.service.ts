@@ -13,6 +13,10 @@ export class DispositivoService {
 
   constructor(private HttpClient: HttpClient) { }
 
+  getDevices(): Observable<Dispositivos[]> {
+    return this.listarComPagina(0, 10).pipe(map(response => response.data));
+  }
+
   listarComPagina(pageIndex: number, pageSize: number): Observable<{ data: Dispositivos[], total: number }> {
     return this.HttpClient.get<{ status: string, data: Dispositivos[], total: number }>(
       `${this.baseURL}/${this.endpoint}?page=${pageIndex + 1}&limit=${pageSize}`
