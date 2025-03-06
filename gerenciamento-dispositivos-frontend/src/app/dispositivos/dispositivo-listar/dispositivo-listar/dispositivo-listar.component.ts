@@ -33,12 +33,26 @@ export class DispositivoListarComponent implements OnInit {
   }
 
   listarItens(pageIndex: number = 0, pageSize: number = 10) {
-    this.dispositivoService.listarComPagina(pageIndex, pageSize).subscribe(response => {
-      this.dispositivos = response.data;
-      this.dataSource.data = this.dispositivos;
-      this.totalDevices = response.total;
-    });
+    this.dispositivoService.listarComPagina(pageIndex, pageSize).subscribe(
+      (response: any) => {
+        // Confirma a estrutura de dados retornada
+        console.log('Resposta da API:', response);
+
+        // Atualiza os dados e total
+        this.dispositivos = response.data;
+        this.totalDevices = response.total;
+
+        // Atualiza o MatTableDataSource com os dados
+        this.dataSource.data = this.dispositivos;
+      },
+      (error) => {
+        console.error('Erro ao carregar dispositivos', error);
+        this.snackBar.open('Erro ao carregar dispositivos. Tente novamente!', 'Fechar', { duration: 3000 });
+      }
+    );
   }
+
+
 
   applyStatusFilter(): void {
     if (this.selectedStatus === 'Em Uso') {
@@ -72,13 +86,13 @@ export class DispositivoListarComponent implements OnInit {
   }
 
   alterarStatus(dispositivo: Dispositivos): void {
-    const novoStatus = !dispositivo.in_use;
+    const novoStatus = dispositivo.in_use === 0 ? 1 : 0; // Se for 0, muda para 1, se for 1, muda para 0
     dispositivo.in_use = novoStatus;
 
     this.dispositivoService.editar(dispositivo.id, dispositivo).subscribe(
       () => {
         this.snackBar.open('Status atualizado com sucesso!', 'Fechar', { duration: 3000 });
-        this.listarItens(this.pageIndex, this.pageSize);
+        this.listarItens(this.pageIndex, this.pageSize);  // Recarregar a lista após a alteração
       },
       () => {
         this.snackBar.open('Erro ao atualizar o status. Tente novamente!', 'Fechar', { duration: 3000 });

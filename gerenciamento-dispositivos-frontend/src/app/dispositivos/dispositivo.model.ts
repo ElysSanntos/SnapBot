@@ -3,5 +3,5 @@ export interface Dispositivos{
   name: string;
   location: string;
   purchase_date: String;
-  in_use: boolean;
+  in_use: number;
 }
