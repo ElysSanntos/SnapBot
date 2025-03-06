@@ -99,9 +99,9 @@ php artisan key:generate
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=seu_banco
-DB_USERNAME=seu_usuario
-DB_PASSWORD=sua_senha
+DB_DATABASE=dispositivos
+DB_USERNAME=root
+DB_PASSWORD=snapbot
 ```
 
 5. Rode as migrações para criar as tabelas no banco de dados:
