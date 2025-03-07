@@ -68,7 +68,7 @@ export class DispositivoListarComponent implements OnInit {
 
 
   pageChanged(event: PageEvent) {
-    this.pageSize = 5;  // Garantir que a página sempre exiba 5 itens
+    this.pageSize = event.pageIndex;  
     this.pageIndex = event.pageIndex;
     this.listarItens(this.pageIndex, this.pageSize);
   }

@@ -49,7 +49,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
-    BrowserAnimationsModule 
+    BrowserAnimationsModule
 
 
 

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { format } from 'date-fns';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+import { ptBR } from 'date-fns/locale';
 
 
 
@@ -18,15 +19,15 @@ export class DispositivoCadastrarEditarComponent implements OnInit {
   formGroup!: FormGroup;
   successMessage: string = '';
   errorMessage: string = '';
-  dispositivoId: number | null = null; // Inicializado corretamente
-
+  dispositivoId: number | null = null;
+  titulo: string = "";
   constructor(
     private formBuilder: FormBuilder, // Mantendo o nome correto
     private dispositivoService: DispositivoService,
     private router: Router,
     private http: HttpClient,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Inicializa o formulário antes de buscar os dados
@@ -40,6 +41,9 @@ export class DispositivoCadastrarEditarComponent implements OnInit {
     // Captura o ID da URL
     this.route.paramMap.subscribe(params => {
       this.dispositivoId = Number(params.get('id')) || null;
+
+      // Define o título dinamicamente
+      this.titulo = this.dispositivoId ? 'Editar Dispositivo' : 'Cadastrar Dispositivo';
 
       if (this.dispositivoId) {
         // Se tiver ID, busca os dados para edição
@@ -55,30 +59,33 @@ export class DispositivoCadastrarEditarComponent implements OnInit {
     });
   }
 
-
   onSubmit(): void {
-    const formData = this.formGroup.value;
-
-    // Formata a data corretamente
-    if (formData.purchase_date instanceof Date && !isNaN(formData.purchase_date.getTime())) {
-      formData.purchase_date = format(formData.purchase_date, 'yyyy-MM-dd HH:mm:ss');
-    } else {
-      formData.purchase_date = format(new Date(formData.purchase_date), 'yyyy-MM-dd HH:mm:ss');
+    // Verifica se o formulário é inválido
+    if (this.formGroup.invalid) {
+      this.errorMessage = 'Preencha todos os campos corretamente.';
+      return;
     }
 
+    const formData = this.formGroup.value;
+
+    // Converte a data para o formato correto antes de enviar
+    if (formData.purchase_date) {
+      const data = new Date(formData.purchase_date);
+      formData.purchase_date = format(data, 'yyyy-MM-dd', { locale: ptBR });
+    }
+
+    // Verifica se é um dispositivo para editar ou criar
     if (this.dispositivoId) {
-      // Editar
       this.http.put(`http://localhost:8000/api/devices/${this.dispositivoId}`, formData).subscribe(
         () => {
           this.successMessage = 'Dispositivo atualizado com sucesso!';
           setTimeout(() => this.router.navigate(['/dispositivos']), 3000);
         },
         () => {
-          this.errorMessage = 'Ocorreu um erro ao atualizar o dispositivo. Tente novamente!';
+          this.errorMessage = 'Erro ao atualizar dispositivo.';
         }
       );
     } else {
-      // Cadastrar
       this.http.post('http://localhost:8000/api/devices', formData).subscribe(
         () => {
           this.successMessage = 'Dispositivo cadastrado com sucesso!';
@@ -86,7 +93,7 @@ export class DispositivoCadastrarEditarComponent implements OnInit {
           this.formGroup.reset();
         },
         () => {
-          this.errorMessage = 'Ocorreu um erro ao cadastrar o dispositivo. Tente novamente!';
+          this.errorMessage = 'Erro ao cadastrar dispositivo.';
         }
       );
     }

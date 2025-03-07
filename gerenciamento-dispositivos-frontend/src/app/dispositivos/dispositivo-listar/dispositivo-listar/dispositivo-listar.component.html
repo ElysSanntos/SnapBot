@@ -27,7 +27,7 @@
 
   <ng-container matColumnDef="purchase_date">
     <th mat-header-cell *matHeaderCellDef> Data de Compra </th>
-    <td mat-cell *matCellDef="let device"> {{device.purchase_date | date}} </td>
+    <td mat-cell *matCellDef="let device"> {{device.purchase_date | date:'dd/MM/yyyy'}} </td>
   </ng-container>
 
   <ng-container matColumnDef="in_use">
@@ -38,7 +38,7 @@
               (click)="alterarStatus(device)"
               [ngStyle]="{
                 'background-color': device.in_use === 1 ? '#bdbdbd' : '#81c784',
-                'color': 'white'
+                'color': 'black'
               }">
         {{ device.in_use === 1 ? 'Em Uso' : 'Disponível' }}
       </button>
