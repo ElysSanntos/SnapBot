@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DispositivoService } from '../../dispositivo.service';
 import { Observable } from 'rxjs';
 import { Dispositivos } from '../../dispositivo.model';
-import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-dispositivo-listar',
@@ -16,9 +16,12 @@ export class DispositivoListarComponent implements OnInit {
 
   dispositivos$: Observable<Dispositivos[]> = new Observable();
   dataSource: MatTableDataSource<Dispositivos> = new MatTableDataSource();
-  totalDevices: number = 0;
+
+  // Para controle de página e quantidade de itens por página
   pageSize: number = 5;
-  pageIndex: number = 0;
+  pageIndex: number = 0; // iniciar na página 0
+  totalItems: number = 0; // usar totalItems
+
   colunasTabela: string[] = ['id', 'name', 'location', 'purchase_date', 'in_use', 'actions'];
   dispositivos: Dispositivos[] = [];
   selectedStatus: 'Em Uso' | 'Disponível' | '' = '';
@@ -30,11 +33,11 @@ export class DispositivoListarComponent implements OnInit {
 
   ngOnInit() {
     this.listarItens();
-    this.pageSize = 5;  // Define a quantidade inicial de itens
+    this.pageSize = 5;  // quantidade inicial de itens por página
     this.listarItens(this.pageIndex, this.pageSize);
   }
 
-  listarItens(pageIndex: number = 0, pageSize: number = 10) {
+  listarItens(pageIndex: number = 0, pageSize: number = 5) {
     this.dispositivoService.listarComPagina(pageIndex, pageSize).subscribe(
       (response: any) => {
         // Confirma a estrutura de dados retornada
@@ -42,7 +45,7 @@ export class DispositivoListarComponent implements OnInit {
 
         // Atualiza os dados e total
         this.dispositivos = response.data;
-        this.totalDevices = response.total;
+        this.totalItems = response.total; // Usa totalItems para refletir o total correto
 
         // Atualiza o MatTableDataSource com os dados
         this.dataSource.data = this.dispositivos;
@@ -54,8 +57,6 @@ export class DispositivoListarComponent implements OnInit {
     );
   }
 
-
-
   applyStatusFilter(): void {
     if (this.selectedStatus === 'Em Uso') {
       this.dataSource.data = this.dispositivos.filter(device => device.in_use);
@@ -64,13 +65,6 @@ export class DispositivoListarComponent implements OnInit {
     } else {
       this.dataSource.data = this.dispositivos;
     }
-  }
-
-
-  pageChanged(event: PageEvent) {
-    this.pageSize = event.pageIndex;  
-    this.pageIndex = event.pageIndex;
-    this.listarItens(this.pageIndex, this.pageSize);
   }
 
   onDelete(id: number): void {
@@ -106,6 +100,20 @@ export class DispositivoListarComponent implements OnInit {
   onEdit(dispositivo: Dispositivos): void {
     // Lógica para editar dispositivo (por exemplo, redirecionar ou abrir um modal)
     console.log('Editando dispositivo', dispositivo);
-    // Aqui você pode redirecionar para outra página ou abrir um modal para edição
+   
   }
+
+  // Função chamada quando a página é alterada
+  pageChanged(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.listarItens(this.pageIndex, this.pageSize);
+  }
+
+  // Função chamada quando a quantidade de itens por página é alterada
+  onPageSizeChange(): void {
+    this.pageIndex = 0; // Reinicia para a primeira página ao alterar o tamanho
+    this.listarItens(this.pageIndex, this.pageSize);
+  }
+
 }
